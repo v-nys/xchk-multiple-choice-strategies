@@ -18,10 +18,10 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
     def component_checks(self):
         return []
 
-    def instructions(self,exercise_name,init_check_number):
+    def instructions(self,exercise_name):
         return [f'Je hebt alle correcte antwoorden per vraag aangeduid.']
 
-    def negative_instructions(self,exercise_name,init_check_number):
+    def negative_instructions(self,exercise_name):
         return [f'Je hebt niet alle correcte antwoorden per vraag aangeduid.']
 
     def render(self):
