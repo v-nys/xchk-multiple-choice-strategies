@@ -11,7 +11,6 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
     def __init__(self,filename,mc_data):
         self.filename = filename
         self.mc_data = mc_data
-        self.custom_data['rendered_mc_qs'] = self.render()
 
     def _entry(self,exercise_name):
         return self.filename or exercise_name
