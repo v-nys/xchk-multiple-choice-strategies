@@ -62,7 +62,7 @@ class MultipleChoiceRenderedListTest(TestCase):
                     ("F",True,None))] 
         chk = MultipleChoiceAnswerCheck(filename=None,mc_data=mc_data)
         outcome = chk.render()
-        expected = '<ul class="multiple-choice"><li>A?<ul><li>B</li><li>C</li></ul></li><li>D?<ul><li>E</li><li>F</li></ul></li></ul>'
+        expected = '<ol class="multiple-choice"><li>A?<ol><li>B</li><li>C</li></ol></li><li>D?<ol><li>E</li><li>F</li></ol></li></ol>'
         self.assertEqual(outcome,expected)
 
 if __name__ == '__main__':
