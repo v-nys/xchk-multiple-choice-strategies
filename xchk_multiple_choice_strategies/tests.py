@@ -51,5 +51,19 @@ class MultipleChoiceAnswerCheckTest(TestCase):
             expected = OutcomeAnalysis(outcome=True,outcomes_components=[OutcomeComponent(component_number=1,outcome=True,desired_outcome=True,rendered_data=None,acceptable_to_ancestor=True)])
             self.assertEqual(outcome,expected)
 
+class MultipleChoiceRenderedListTest(TestCase):
+
+    def test_realistic_list(self):
+        mc_data = [("A?",
+                    ("B",False,None),
+                    ("C",True,None)),
+                   ("D?",
+                    ("E",False,None),
+                    ("F",True,None))] 
+        chk = MultipleChoiceAnswerCheck(filename=None,mc_data=mc_data)
+        outcome = chk.render()
+        expected = '<ul class="multiple-choice"><li>A?<ul><li>B</li><li>C</li></ul></li><li>D?<ul><li>E</li><li>F</li></ul></li></ul>'
+        self.assertEqual(outcome,expected)
+
 if __name__ == '__main__':
     unittest.main()

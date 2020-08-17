@@ -26,9 +26,9 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
 
     def render(self):
         def _answers_as_lis(q_tuple):
-            return ''.join([f'<li>{a[0]}</li>' for a in q[1:-1]])
+            return ''.join([f'<li>{a[0]}</li>' for a in q_tuple[1:]])
         questions_as_lis = ''.join([f"<li>{q[0]}<ul>{_answers_as_lis(q)}</ul></li>" for q in self.mc_data])
-        return f'<ul class=multiple-choice>{questions_as_lis}</ul>'
+        return f'<ul class="multiple-choice">{questions_as_lis}</ul>'
 
     def check_submission(self,submission,student_path,desired_outcome,init_check_number,ancestor_has_alternatives,parent_is_negation=False,open=open):
         # moet bij elke vraag nummer controleren (moet volgen op vorig, dat begint bij 0)
