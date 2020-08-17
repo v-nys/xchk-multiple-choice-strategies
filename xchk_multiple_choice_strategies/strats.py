@@ -11,12 +11,10 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
     def __init__(self,filename,mc_data):
         self.filename = filename
         self.mc_data = mc_data
+        self.custom_data['rendered_mc_qs'] = self.render()
 
     def _entry(self,exercise_name):
         return self.filename or exercise_name
-
-    def mentioned_files(self,exercise_name):
-        return set()
 
     def component_checks(self):
         return []
@@ -26,6 +24,12 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
 
     def negative_instructions(self,exercise_name,init_check_number):
         return [f'Je hebt niet alle correcte antwoorden per vraag aangeduid.']
+
+    def render(self):
+        def _answers_as_lis(q_tuple):
+            return ''.join([f'<li>{a[0]}</li>' for a in q[1:-1]])
+        questions_as_lis = ''.join([f"<li>{q[0]}<ul>{_answers_as_lis(q)}</ul></li>" for q in self.mc_data])
+        return f'<ul class=multiple-choice>{questions_as_lis}</ul>'
 
     def check_submission(self,submission,student_path,desired_outcome,init_check_number,ancestor_has_alternatives,parent_is_negation=False,open=open):
         # moet bij elke vraag nummer controleren (moet volgen op vorig, dat begint bij 0)
@@ -67,10 +71,6 @@ class MultipleChoiceFormatCheck(CheckingPredicate):
 
     def component_checks(self):
         return []
-
-    def mentioned_files(self,exercise_name):
-        """This is here so we can easily check submitted relevant files through UI."""
-        return set()
 
     def check_submission(self,submission,student_path,desired_outcome,init_check_number,ancestor_has_alternatives,parent_is_negation=False,open=open):
         # with open(os.path.join(student_path,self._entry(submission.content_uid))) as fhs:
