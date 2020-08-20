@@ -3,14 +3,14 @@ from unittest.mock import MagicMock, patch
 from django.test import TestCase
 from xchk_multiple_choice_strategies.strats import MultipleChoiceFormatCheck, MultipleChoiceAnswerCheck
 from xchk_core.strats import OutcomeAnalysis, OutcomeComponent
-from xchk_core.models import SubmissionV2
+from xchk_core.models import Submission
 
 class MultipleChoiceFormatCheckTest(TestCase):
 
     def test_valid_input(self):
         # will need to patch open, just providing won't work here because of how antlr reads filestream
         chk = MultipleChoiceFormatCheck(filename='myfile.txt')
-        submission = SubmissionV2()
+        submission = Submission()
         with patch('builtins.open') as mock_open:
             # https://github.com/antlr/antlr4/blob/master/runtime/Python3/src/antlr4/FileStream.py
             # need to mock read() method
@@ -21,7 +21,7 @@ class MultipleChoiceFormatCheckTest(TestCase):
 
     def test_invalid_input_starting_with_letters(self):
         chk = MultipleChoiceFormatCheck(filename='myfile.txt')
-        submission = SubmissionV2()
+        submission = Submission()
         with patch('builtins.open') as mock_open:
             mock_open.return_value.__enter__.return_value.read.return_value = b'AAAA1 A 2 B C 3 D'
             outcome = chk.check_submission(submission=submission,student_path='/student',desired_outcome=True,init_check_number=1,ancestor_has_alternatives=False,parent_is_negation=False)
@@ -30,7 +30,7 @@ class MultipleChoiceFormatCheckTest(TestCase):
 
     def test_invalid_input_containing_dollar_symbol(self):
         chk = MultipleChoiceFormatCheck(filename='myfile.txt')
-        submission = SubmissionV2()
+        submission = Submission()
         with patch('builtins.open') as mock_open:
             mock_open.return_value.__enter__.return_value.read.return_value = b'//blabla\n1\n$\n//blabla\nA\nB'
             outcome = chk.check_submission(submission=submission,student_path='/student',desired_outcome=True,init_check_number=1,ancestor_has_alternatives=False,parent_is_negation=False)
@@ -51,7 +51,7 @@ class MultipleChoiceAnswerCheckTest(TestCase):
                     ("Ja",True,"Het is je nog nooit overkomen dat er iets gevraagd werd dat je niet in de les hebt gezien?"),
                     ("Nee",False,None))] 
         chk = MultipleChoiceAnswerCheck(filename='myfile.txt',mc_data=mc_data)
-        submission = SubmissionV2()
+        submission = Submission()
         with patch('builtins.open') as mock_open:
             # https://github.com/antlr/antlr4/blob/master/runtime/Python3/src/antlr4/FileStream.py
             # need to mock read() method
