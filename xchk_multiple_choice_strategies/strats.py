@@ -78,7 +78,7 @@ class MultipleChoiceFormatCheck(CheckingPredicate):
         token_stream = CommonTokenStream(lexer)
         parser = MultipleChoiceParser(token_stream)
         tree = parser.multiplechoice()
-        overall_outcome = parser.getNumberOfSyntaxErrors() == 0
+        overall_outcome = parser.getNumberOfSyntaxErrors() == 0 and not lexer.lexing_error
         components = [OutcomeComponent(component_number=init_check_number,
                                        outcome=overall_outcome,
                                        desired_outcome=desired_outcome,

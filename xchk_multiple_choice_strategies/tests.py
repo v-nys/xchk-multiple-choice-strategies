@@ -19,11 +19,20 @@ class MultipleChoiceFormatCheckTest(TestCase):
             expected = OutcomeAnalysis(outcome=True,outcomes_components=[OutcomeComponent(component_number=1,outcome=True,desired_outcome=True,rendered_data=None,acceptable_to_ancestor=True)])
             self.assertEqual(outcome,expected)
 
-    def test_invalid_input(self):
+    def test_invalid_input_starting_with_letters(self):
         chk = MultipleChoiceFormatCheck(filename='myfile.txt')
         submission = SubmissionV2()
         with patch('builtins.open') as mock_open:
             mock_open.return_value.__enter__.return_value.read.return_value = b'AAAA1 A 2 B C 3 D'
+            outcome = chk.check_submission(submission=submission,student_path='/student',desired_outcome=True,init_check_number=1,ancestor_has_alternatives=False,parent_is_negation=False)
+            expected = OutcomeAnalysis(outcome=False,outcomes_components=[OutcomeComponent(component_number=1,outcome=False,desired_outcome=True,rendered_data='<p>Het formaat voor meerkeuzevragen is als volgt:</p>',acceptable_to_ancestor=False)])
+            self.assertEqual(outcome,expected)
+
+    def test_invalid_input_containing_dollar_symbol(self):
+        chk = MultipleChoiceFormatCheck(filename='myfile.txt')
+        submission = SubmissionV2()
+        with patch('builtins.open') as mock_open:
+            mock_open.return_value.__enter__.return_value.read.return_value = b'//blabla\n1\n$\n//blabla\nA\nB'
             outcome = chk.check_submission(submission=submission,student_path='/student',desired_outcome=True,init_check_number=1,ancestor_has_alternatives=False,parent_is_negation=False)
             expected = OutcomeAnalysis(outcome=False,outcomes_components=[OutcomeComponent(component_number=1,outcome=False,desired_outcome=True,rendered_data='<p>Het formaat voor meerkeuzevragen is als volgt:</p>',acceptable_to_ancestor=False)])
             self.assertEqual(outcome,expected)
@@ -63,7 +72,7 @@ class MultipleChoiceRenderedListTest(TestCase):
         chk = MultipleChoiceAnswerCheck(filename=None,mc_data=mc_data)
         outcome = chk.render()
         expected = '<ol class="multiple-choice"><li>A?<ol><li>B</li><li>C</li></ol></li><li>D?<ol><li>E</li><li>F</li></ol></li></ol>'
-        self.assertEqual(outcome,expected)
+        self.assertIn(expected,outcome)
 
 if __name__ == '__main__':
     unittest.main()

@@ -59,5 +59,8 @@ class MultipleChoiceLexer(Lexer):
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None
+        self.lexing_error = False
 
-
+    def notifyListeners(self,e):
+        super().notifyListeners(e)
+        self.lexing_error = True
