@@ -28,7 +28,7 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
         def _answers_as_lis(q_tuple):
             return ''.join([f'<li>{a[0]}</li>' for a in q_tuple[1:]])
         questions_as_lis = ''.join([f"<li>{q[0]}<ol>{_answers_as_lis(q)}</ol></li>" for q in self.mc_data])
-        return f'<p>Zet in je bestand telkens het getal dat een vraag voorstelt, gevolgd door de antwoorden. Gebruik alleen witruimte om elementen te scheiden, geen leestekens of andere symbolen. Je kan commentaar toevoegen tot het einde van de regel met <code>//</code>.</p><ol class="multiple-choice">{questions_as_lis}</ol>'
+        return f'<p>Zet in je bestand telkens het getal dat een vraag voorstelt, gevolgd door de antwoorden. Gebruik alleen witruimte om elementen te scheiden, geen leestekens of andere symbolen. Je kan commentaar toevoegen tot het einde van de regel met <code>//</code>. Dit wordt <a href="https://youtu.be/dJkUrbudEWM">hier</a> gedemonstreerd.</p><ol class="multiple-choice">{questions_as_lis}</ol>'
 
     def check_submission(self,submission,student_path,desired_outcome,init_check_number,ancestor_has_alternatives,parent_is_negation=False,open=open):
         # moet bij elke vraag nummer controleren (moet volgen op vorig, dat begint bij 0)
