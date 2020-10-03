@@ -60,6 +60,25 @@ class MultipleChoiceAnswerCheckTest(TestCase):
             expected = OutcomeAnalysis(outcome=True,outcomes_components=[OutcomeComponent(component_number=1,outcome=True,desired_outcome=True,rendered_data=None,acceptable_to_ancestor=True)])
             self.assertEqual(outcome,expected)
 
+    def test_invalid_answers(self):
+        # will need to patch open, just providing won't work here because of how antlr reads filestream
+        mc_data = [("Rozen zijn (meestal)",
+                    ("Rood",True,"Mis je geen kleur die op de naam van de bloem lijkt?"),
+                    ("Bloemen",True,"Je weet toch wat rozen zijn?"),
+                    ("Groen",False,"Komaan, je weet dat het over de blaadjes gaat.")),
+                   ("Weten studenten altijd hoe ze studiemateriaal moeten benaderen?",
+                    ("Ja",False,"Als dat waar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?"),
+                    ("Nee",True,"Als dat niet onwaar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?"))] 
+        chk = MultipleChoiceAnswerCheck(filename='myfile.txt',mc_data=mc_data)
+        submission = Submission()
+        with patch('builtins.open') as mock_open:
+            mock_open.return_value.__enter__.return_value.read.return_value = b'1 C 2 A'
+            outcome = chk.check_submission(submission=submission,student_path='/student',desired_outcome=True,init_check_number=1,ancestor_has_alternatives=False,parent_is_negation=False)
+            print(outcome)
+            expected = OutcomeAnalysis(outcome=False,outcomes_components=[OutcomeComponent(component_number=1,outcome=False,desired_outcome=True,rendered_data='<ul><li>Vraag 1: Mis je geen kleur die op de naam van de bloem lijkt?</li><li>Vraag 1: Je weet toch wat rozen zijn?</li><li>Vraag 1: Komaan, je weet dat het over de blaadjes gaat.</li><li>Vraag 2: Als dat niet onwaar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?</li><li>Vraag 2: Als dat waar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?</li></ul>',acceptable_to_ancestor=False)])
+            self.assertEqual(outcome,expected)
+
+
 class MultipleChoiceRenderedListTest(TestCase):
 
     def test_realistic_list(self):

@@ -44,10 +44,14 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
         walker = ParseTreeWalker()
         walker.walk(checker,tree)
         overall_outcome = len(checker.error_list) == 0
+        htmlified_error_list = "<ul>"
+        for elem in checker.error_list:
+            htmlified_error_list += f'<li>{elem}</li>'
+        htmlified_error_list += "</ul>"
         components = [OutcomeComponent(component_number=init_check_number,
                                        outcome=overall_outcome,
                                        desired_outcome=desired_outcome,
-                                       rendered_data="meer doen met errorlist" if overall_outcome != desired_outcome else None,
+                                       rendered_data=htmlified_error_list if overall_outcome != desired_outcome else None,
                                        acceptable_to_ancestor = overall_outcome == desired_outcome or ancestor_has_alternatives)]
         return OutcomeAnalysis(outcome=overall_outcome,
                                outcomes_components=components)
