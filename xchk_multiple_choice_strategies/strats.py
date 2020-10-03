@@ -44,7 +44,8 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
         walker = ParseTreeWalker()
         walker.walk(checker,tree)
         overall_outcome = len(checker.error_list) == 0
-        htmlified_error_list = "<ul>"
+
+        htmlified_error_list = "<p>Je mist correcte antwoorden of je hebt verkeerde antwoorden. Gebruik onderstaande hints om je inzending te corrigeren:</p><ul>"
         for elem in checker.error_list:
             htmlified_error_list += f'<li>{elem}</li>'
         htmlified_error_list += "</ul>"
