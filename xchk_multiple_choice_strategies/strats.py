@@ -1,5 +1,5 @@
 import os
-import random
+#import random
 from antlr4 import *
 from xchk_core.strats import CheckingPredicate, Strategy, OutcomeComponent, OutcomeAnalysis, StratInstructions
 
@@ -45,7 +45,7 @@ class MultipleChoiceAnswerCheck(CheckingPredicate):
         walker = ParseTreeWalker()
         walker.walk(checker,tree)
         overall_outcome = len(checker.error_list) == 0
-        random.shuffle(checker.error_list)
+        #random.shuffle(checker.error_list)
         htmlified_error_list = "<p>Je mist correcte antwoorden of je hebt verkeerde antwoorden. Gebruik onderstaande hints om je inzending te corrigeren. Je krijgt een paar willekeurige hints per inzending. Gebruik deze om de stof beter te begrijpen en pas dan je antwoord aan. Het heeft geen zin alle combinaties te proberen, want dan saboteer je je eigen begrip van de leerstof.</p><ul>"
         for elem in checker.error_list[0:3]:
             htmlified_error_list += f'<li>{elem}</li>' if elem else ''
