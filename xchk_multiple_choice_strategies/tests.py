@@ -75,7 +75,7 @@ class MultipleChoiceAnswerCheckTest(TestCase):
             mock_open.return_value.__enter__.return_value.read.return_value = b'1 C 2 A'
             outcome = chk.check_submission(submission=submission,student_path='/student',desired_outcome=True,init_check_number=1,ancestor_has_alternatives=False,parent_is_negation=False)
             print(outcome)
-            expected = OutcomeAnalysis(outcome=False,outcomes_components=[OutcomeComponent(component_number=1,outcome=False,desired_outcome=True,rendered_data='<ul><li>Vraag 1: Mis je geen kleur die op de naam van de bloem lijkt?</li><li>Vraag 1: Je weet toch wat rozen zijn?</li><li>Vraag 1: Komaan, je weet dat het over de blaadjes gaat.</li><li>Vraag 2: Als dat niet onwaar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?</li><li>Vraag 2: Als dat waar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?</li></ul>',acceptable_to_ancestor=False)])
+            expected = OutcomeAnalysis(outcome=False,outcomes_components=[OutcomeComponent(component_number=1,outcome=False,desired_outcome=True,rendered_data='<p>Je mist correcte antwoorden of je hebt verkeerde antwoorden. Gebruik onderstaande hints om je inzending te corrigeren:</p><ul><li>Vraag 1: Mis je geen kleur die op de naam van de bloem lijkt?</li><li>Vraag 1: Je weet toch wat rozen zijn?</li><li>Vraag 1: Komaan, je weet dat het over de blaadjes gaat.</li><li>Vraag 2: Als dat niet onwaar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?</li><li>Vraag 2: Als dat waar is, waarom vragen we hen dan niet gewoon alles zelf op te zoeken?</li></ul>',acceptable_to_ancestor=False)])
             self.assertEqual(outcome,expected)
 
 
